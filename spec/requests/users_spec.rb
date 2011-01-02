@@ -5,7 +5,6 @@ describe "Users" do
   describe "signup" do
     
     describe "success" do
-
       it "should make a new user" do
         lambda do
           visit signup_path
@@ -21,8 +20,7 @@ describe "Users" do
       end
     end
 
-  describe "failure" do
-    
+    describe "failure" do    
       it "should not make a new user" do
         lambda do
           visit signup_path
@@ -38,8 +36,8 @@ describe "Users" do
     end
   end
   
-  
   describe "sign in/out" do
+
 	describe "failure" do
       it "should not sign a user in" do
         visit signin_path

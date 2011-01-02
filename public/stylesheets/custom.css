@@ -135,6 +135,7 @@ td.sidebar {
 .profile img.gravatar {
   border: 1px solid #999;
   margin-bottom: -15px;
+  width: 150px;
 }
 
 div.field, div.actions {

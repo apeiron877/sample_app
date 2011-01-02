@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe SessionsController do
   render_views
-
-
   
   describe "DELETE 'destroy'" do
     it "should sign a user out" do
@@ -25,11 +23,10 @@ describe SessionsController do
       response.should have_selector("title", :content => "Sign in")
     end
   end
-
-
   
-  describe "POST 'create'" do
-    
+  
+  describe "POST 'create'" do   
+ 
     describe "success" do
       before(:each) do
         @user = Factory(:user)
