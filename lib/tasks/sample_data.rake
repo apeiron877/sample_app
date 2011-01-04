@@ -12,15 +12,21 @@ end
 
 def make_users
   admin = User.create!(:name => "Example User",
+					   :username => "example_user_admin",
                        :email => "example@railstutorial.org",
                        :password => "foobar",
                        :password_confirmation => "foobar")
   admin.toggle!(:admin)
-  99.times do |n|
+  rand = 10 + rand(30)
+  rand.times do |n|
     name  = Faker::Name.name
+    fixed_name = name.gsub(" ", "_").downcase
+    username = "#{name.gsub(" ", "_").downcase}_#{n}"
+    
     email = "example-#{n+1}@railstutorial.org"
     password  = "password"
     User.create!(:name => name,
+				 :username => username,
                  :email => email,
                  :password => password,
                  :password_confirmation => password)
@@ -28,8 +34,8 @@ def make_users
 end
 
 def make_microposts
-  User.all(:limit => 6).each do |user|
-    50.times do
+  User.all(:limit => 10).each do |user|
+    10.times do
       content = Faker::Lorem.sentence(5)
       user.microposts.create!(:content => content)
     end

@@ -1,18 +1,23 @@
 # == Schema Information
-# Schema version: 20101227173257
+# Schema version: 20110103181314
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  encrypted_password :string(255)
+#  salt               :string(255)
+#  admin              :boolean
+#  username           :string(255)
 #
+
 require 'digest'
 class User < ActiveRecord::Base
   attr_accessor :password
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :name, :username, :email, :password, :password_confirmation
   has_many :microposts, :dependent => :destroy
   has_many :relationships, :foreign_key => "follower_id",
 						   :dependent => :destroy
@@ -27,17 +32,24 @@ class User < ActiveRecord::Base
   
 						   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  username_regex = /\A[\w+\-.']+[a-z\d\-.']+\z/i
+ 					
+  validates :name,      :presence => true,
+                        :length => {:maximum => 50}
+                        
+  validates :username,  :presence => true,
+                        :length => {:maximum => 60},
+                        :uniqueness => true,
+                        :format => { :with => username_regex }
+
+                        
+  validates :email,     :presence => true,
+                        :format => { :with => email_regex },
+                        :uniqueness => { :case_sensitive => false }
   
-  validates :name,  :presence => true,
-                    :length => {:maximum => 50}
-  
-  validates :email, :presence => true,
-                    :format => { :with => email_regex },
-                    :uniqueness => { :case_sensitive => false }
-  
-  validates :password, :presence       => true,
-                       :confirmation   => true,
-                       :length         => { :within => 6..40 }
+  validates :password,  :presence       => true,
+                        :confirmation   => true,
+                        :length         => { :within => 6..40 }
   before_save :encrypt_password
 
   # returns true if the user signed in with the correct password
@@ -80,7 +92,7 @@ class User < ActiveRecord::Base
  
   # Creates the news feed
   def feed
-    Micropost.from_users_followed_by(self)
+    (Micropost.feed(self))
   end
 
 
@@ -102,8 +114,6 @@ private
   def secure_hash(string)
     Digest::SHA2.hexdigest(string)
   end
-  
-
   
   
 end	

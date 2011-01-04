@@ -19,8 +19,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "Welcome to the Sample App!"
       sign_in @user
-      redirect_to @user
-	  
+      redirect_to @user  
     else
       @title = "Sign up"
       @user.password = ""
@@ -61,21 +60,14 @@ class UsersController < ApplicationController
   end
 
   def following	
-	@user = User.find(params[:id])
-	@title = "People #{@user.name} follows:"
-	@users = @user.following.paginate(:page => params[:page])
-	render 'show_follow'
+	show_follow(:following)
   end
   
   def followers
-	@user = User.find(params[:id])
-	@title = "#{@user.name}'s followers:"
-	@users = @user.followers.paginate(:page => params[:page])
-	render 'show_follow'
+	show_follow(:followers)
   end
 		
-private 
-  
+private   
 	
   def correct_user
 	@user = User.find(params[:id])
@@ -88,5 +80,13 @@ private
     elsif !(current_user.admin?)
       redirect_to(root_path)
     end	
+  end
+  
+  def show_follow(action)
+  @user = User.find(params[:id])
+  @users = @user.send(action).paginate(:page => params[:page]) 
+  action == :followers ? @title = "#{@user.name}'s followers:" : 
+					     @title = "People #{@user.name} follows:"	 
+  render 'show_follow'
   end
 end

@@ -24,8 +24,12 @@ section {
 
 section h1 {
   font-size: 200%;
+  vertical-align: top;
 }
 
+section h2 {
+  font-size: 125%;
+}
 /* Links */
 
 a {
@@ -122,7 +126,7 @@ table.profile {
 
 td.main {
   width: 70%;
-  padding: 1em;
+  padding: 0em;
 }
 
 td.sidebar {
@@ -132,11 +136,7 @@ td.sidebar {
   background: #ffc;
 }
 
-.profile img.gravatar {
-  border: 1px solid #999;
-  margin-bottom: -15px;
-  width: 150px;
-}
+
 
 div.field, div.actions {
 margin-bottom: 10px;

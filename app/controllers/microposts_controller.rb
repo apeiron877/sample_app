@@ -6,8 +6,19 @@ class MicropostsController < ApplicationController
   def create
     @micropost = current_user.microposts.build(params[:micropost])
     if @micropost.save
-      flash[:success] = "Micropost created"
-      redirect_to root_path
+       if (@micropost.content.first == '@')
+		  index = @micropost.content.index(" ")
+          index.nil? ? target_user =  0 : 
+					   target_user = @micropost.content.at(1..(index-1))
+		  user = User.find_by_username(target_user) 
+		  user.nil? ?  @micropost.reply_to = 0 :
+					   @micropost.reply_to = user.id
+	   else
+	   @micropost.reply_to = 0
+	   end
+	   @micropost.save
+	   flash[:success] = "Micropost created"
+	   redirect_to root_path
     else
       @feed_items = []
       render 'pages/home'

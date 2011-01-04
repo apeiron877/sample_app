@@ -9,6 +9,6 @@
 
 
 <div>
-  <%= gravatar_for @user %>
+  <%= image_tag(avatar_url(@user,48)) %>
   <%= link_to "Change Profile Picture", "http://gravatar.com/emails"%>								  
 </div>

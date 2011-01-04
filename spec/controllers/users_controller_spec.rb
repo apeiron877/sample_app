@@ -25,7 +25,7 @@ describe UsersController do
     end
     it "should have a profile image" do
       get :show, :id => @user
-      response.should have_selector("h1>img", :class => "gravatar")
+      response.should have_selector("h1>img")
     end   
     it "should show the user's microposts" do
       mp1 = Factory(:micropost, :user => @user, :content => "Foo bar")
@@ -212,7 +212,6 @@ describe UsersController do
         @user = test_sign_in(Factory(:user))
         second = Factory(:user, :email => "another@example.com")
         third  = Factory(:user, :email => "another@example.net")
-
         @users = [@user, second, third]
       end
       it "should be successful" do

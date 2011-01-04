@@ -2,10 +2,13 @@
   <tr>
     <td class="main">
       <h1>
-        <%= gravatar_for @user, :size => 175 %>
+        <%= image_tag avatar_url(@user,96) %>
         <%= @user.name %>
-        <%= render 'follow_form' if signed_in? %>
       </h1>
+      <h2>
+		<%= "@#{@user.username}" %>
+        <%= render 'follow_form' if signed_in? %>
+      </h2>
       <% unless @user.microposts.empty? %>
         <table class="microposts" summary="User microposts">
           <%= render @microposts %>
@@ -15,6 +18,7 @@
     </td>
     <td class="sidebar round">
       <strong>Name</strong> <%= @user.name %><br />
+      <strong>Username</strong> <%= @user.username %><br />
       <strong>URL</strong>  <%= link_to user_path(@user), @user %><br />
       <strong>Microposts</strong> <%= @user.microposts.count %>
       <%= render 'shared/stats' %>
